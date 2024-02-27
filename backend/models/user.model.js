@@ -27,6 +27,11 @@ var userSchema = new mongoose.Schema(
       type: String,
       required: true,
     },
+    profilePicture: {
+      type: String,
+      default:
+        "https://img.freepik.com/premium-vector/user-profile-icon-flat-style-member-avatar-vector-illustration-isolated-background-human-permission-sign-business-concept_157943-15752.jpg",
+    },
     role: {
       type: String,
       enum: ["user", "seller", "admin"],
