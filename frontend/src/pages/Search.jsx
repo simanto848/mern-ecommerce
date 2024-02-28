@@ -87,8 +87,9 @@ export default function Search() {
           <div className="flex items-center gap-2">
             <label className="font-semibold">Sort:</label>
             <Select onChange={handleChange} id="sort">
-              <option value="desc">Latest</option>
-              <option value="asc">Oldest</option>
+              <option value="desc">Price</option>
+              <option value="asc">Sold</option>
+              <option value="asc">Review</option>
             </Select>
           </div>
           <Button type="submit" outline gradientDuoTone="purpleToPink">

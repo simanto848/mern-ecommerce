@@ -7,21 +7,32 @@ export const createReview = asyncHandler(async (req, res) => {
   try {
     const { productId, comment, rating } = req.body;
     const product = await Product.findById(productId);
-    if (product) {
-      const review = new Review({
-        userId: req.user._id,
-        productId,
-        comment,
-        rating,
-      });
-      await review.save();
-      res.status(201).json({ message: "Review added successfully" });
-    } else {
+    if (!product) {
       res.status(404);
       throw new Error("Product not found");
     }
+
+    const existingReview = await Review.findOne({
+      userId: req.user._id,
+      productId,
+    });
+
+    if (existingReview) {
+      res.status(400);
+      throw new Error("You have already submitted a review for this product");
+    }
+
+    const review = new Review({
+      userId: req.user.id,
+      productId,
+      comment,
+      rating,
+    });
+    await review.save();
+
+    res.status(201).json({ message: "Review added successfully" });
   } catch (error) {
-    throw new Error(error);
+    res.status(500).json({ error: "Failed to create review" });
   }
 });
 

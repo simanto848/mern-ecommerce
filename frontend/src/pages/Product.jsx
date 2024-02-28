@@ -2,6 +2,8 @@ import { useEffect, useState } from "react";
 import { useParams } from "react-router-dom";
 import toast, { Toaster } from "react-hot-toast";
 import { useSelector } from "react-redux";
+import ReviewForm from "./ReviewForm";
+import ProductReviews from "./ProductReviews"; // Import ProductReviews component
 
 export default function Product() {
   const { currentUser } = useSelector((state) => state.user);
@@ -57,6 +59,16 @@ export default function Product() {
           </button>
         </div>
       </div>
+
+      {currentUser && (
+        <div className="my-8">
+          <h2 className="text-xl font-semibold mb-4">Add a Review</h2>
+          <ReviewForm productId={productId} />
+        </div>
+      )}
+
+      <ProductReviews productId={productId} />
+
       {currentUser && <Toaster />}
     </div>
   );
