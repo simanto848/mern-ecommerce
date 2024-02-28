@@ -1,25 +1,31 @@
 import { Link } from "react-router-dom";
+import { Button } from "flowbite-react";
 import { useEffect, useState } from "react";
 import ProductCard from "../components/ProductCard";
 
 export default function Home() {
   const [products, setProducts] = useState([]);
+  const [page, setPage] = useState(1);
 
   useEffect(() => {
     const fetchProducts = async () => {
       try {
-        const res = await fetch("/api/product");
+        const res = await fetch(`/api/product?page=${page}`);
         if (!res.ok) {
           throw new Error("Failed to fetch products");
         }
         const data = await res.json();
-        setProducts(data);
+        setProducts((prevProducts) => [...prevProducts, ...data]);
       } catch (error) {
         console.error(error);
       }
     };
     fetchProducts();
-  }, []);
+  }, [page]);
+
+  const handleLoadMore = () => {
+    setPage((prevPage) => prevPage + 1);
+  };
 
   return (
     <div>
@@ -41,11 +47,17 @@ export default function Home() {
               <ProductCard key={product._id} product={product} />
             ))}
         </div>
-        <div className="flex justify-center mt-6">
-          <Link to="/products" className="text-blue-500 hover:underline">
-            View All Products
-          </Link>
-        </div>
+        {products.length % 8 === 0 && (
+          <div className="flex justify-center mt-6">
+            <Button
+              onClick={handleLoadMore}
+              className="text-white hover:underline"
+              gradientDuoTone="purpleToPink"
+            >
+              Load More
+            </Button>
+          </div>
+        )}
       </div>
     </div>
   );

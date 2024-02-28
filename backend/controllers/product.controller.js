@@ -36,11 +36,14 @@ export const addProduct = asyncHandler(async (req, res) => {
 });
 
 export const getProducts = asyncHandler(async (req, res) => {
+  const { page = 1, limit = 8 } = req.query;
   try {
-    const products = await Product.find({});
+    const products = await Product.find()
+      .skip((page - 1) * limit)
+      .limit(parseInt(limit));
     res.status(200).json(products);
   } catch (error) {
-    throw new Error(error);
+    res.status(500).json({ message: error.message });
   }
 });
 
