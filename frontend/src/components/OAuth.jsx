@@ -21,6 +21,7 @@ export default function OAuth() {
         body: JSON.stringify({
           name: resultsFromGoogle.user.displayName,
           email: resultsFromGoogle.user.email,
+          mobile: resultsFromGoogle.user.mobile,
           googlePhotoUrl: resultsFromGoogle.user.photoURL,
         }),
       });

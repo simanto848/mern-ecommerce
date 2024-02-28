@@ -74,6 +74,7 @@ export const logout = asyncHandler(async (req, res) => {
 
 export const google = async (req, res, next) => {
   const { email, name, googlePhotoUrl, mobile } = req.body;
+  console.log("Google user data", req.body);
   try {
     const user = await User.findOne({ email });
     if (user) {
@@ -92,7 +93,7 @@ export const google = async (req, res, next) => {
       const generatedPassword =
         Math.random().toString(36).slice(-8) +
         Math.random().toString(36).slice(-8);
-      const hashedPassword = bcrypt.hashSync(generatedPassword, 10);
+      const hashedPassword = await bycrypt.hash(generatedPassword, 10);
       const newUser = new User({
         username:
           name.toLowerCase().split(" ").join("") +
