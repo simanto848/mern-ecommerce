@@ -28,7 +28,6 @@ export const addProduct = asyncHandler(async (req, res) => {
   });
   try {
     const savedProduct = await newProduct.save();
-    console.log(savedProduct);
     res.status(201).json(savedProduct);
   } catch (error) {
     console.log(error);
@@ -52,6 +51,16 @@ export const getProduct = asyncHandler(async (req, res) => {
       throw new Error("Product not found");
     }
     res.status(200).json(product);
+  } catch (error) {
+    throw new Error(error);
+  }
+});
+
+export const searchProducts = asyncHandler(async (req, res) => {
+  const { searchTerm } = req.params;
+  try {
+    const products = await Product.find({ slug: searchTerm });
+    res.json(products);
   } catch (error) {
     throw new Error(error);
   }
